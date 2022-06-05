@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "gametest-maths": "^1.2.1",
+    "mbcore-gametest": "^2.4.0"
+  }
+}

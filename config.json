@@ -1,0 +1,69 @@
+{
+  "author": "MajestikButter",
+  "name": "scoreboard-expansion",
+  "packs": {
+    "behaviorPack": "./packs/BP",
+    "resourcePack": "./packs/RP"
+  },
+  "regolith": {
+    "dataPath": "./packs/data",
+    "filterDefinitions": {
+      "esbuild_executor": {
+        "url": "github.com/MajestikButter/Regolith-Filters",
+        "version": "6fa6a6a9298f7d033d0f2e421edfb33292807aae"
+      },
+      "json_formatter": {
+        "url": "github.com/MajestikButter/Regolith-Filters",
+        "version": "6fa6a6a9298f7d033d0f2e421edfb33292807aae"
+      },
+      "module_importer": {
+        "url": "github.com/ShiCheng-Lu/Regolith-Filters",
+        "version": "01f46fc742aa8e7735f9f48d8c71f8bc459b3118"
+      }
+    },
+    "profiles": {
+      "build": {
+        "export": {
+          "readOnly": false,
+          "target": "local"
+        },
+        "filters": [
+          {
+            "filter": "module_importer"
+          },
+          {
+            "filter": "esbuild_executor",
+            "settings": {
+              "removeGlob": "BP/src/**/*"
+            }
+          },
+          {
+            "filter": "json_formatter",
+            "settings": {}
+          }
+        ]
+      },
+      "dev": {
+        "export": {
+          "readOnly": false,
+          "target": "development"
+        },
+        "filters": [
+          {
+            "filter": "module_importer"
+          },
+          {
+            "filter": "esbuild_executor",
+            "settings": {
+              "removeGlob": "BP/src/**/*"
+            }
+          },
+          {
+            "filter": "json_formatter",
+            "settings": {}
+          }
+        ]
+      }
+    }
+  }
+}
