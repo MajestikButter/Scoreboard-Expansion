@@ -179,7 +179,7 @@
 > - `mbsbe.rotationX`
 > - `mbsbe.rotationY`
 >
-> Velocity criteria are used to store the player's rotation.
+> Rotation criteria are used to store the player's rotation.
 >
 > Each rotation criteria takes a positive integer as an argument. The argument will specify how many decimals to include in the output score.
 >
