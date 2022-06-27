@@ -44,7 +44,7 @@
 
 ### `totalKillCount`
 
-> Increments when a player kills any entity besides another player.
+> Increments when a player kills any entity or player.
 
 &nbsp;
 
