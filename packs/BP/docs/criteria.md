@@ -156,4 +156,31 @@
 >
 > Each position criteria takes a positive integer as an argument. The argument will specify how many decimals to include in the output score.
 >
-> For example, if the player's coordinate is 10.313 and the argument is set to 2, the output score will be 1031. Setting the score of an objective with this type will also set the player's position on that coordinate.
+> For example, if the player's position on one axis is 10.313 and the argument is set to 2, the output score will be 1031. Setting the score of an objective with this type will also set the player's position on that coordinate.
+
+### Velocity Criteria
+
+> Velocity criteria:
+>
+> - `mbsbe.velocityX`
+> - `mbsbe.velocityY`
+> - `mbsbe.velocityZ`
+>
+> Velocity criteria are used to store the player's velocity.
+>
+> Each velocity criteria takes a positive integer as an argument. The argument will specify how many decimals to include in the output score.
+>
+> For example, if the player's velocity on one axis is 10.313 and the argument is set to 2, the output score will be 1031. Setting the score of an objective with this type will also set the player's velocity on that axis.
+
+### Rotation Criteria
+
+> Rotation criteria:
+>
+> - `mbsbe.rotationX`
+> - `mbsbe.rotationY`
+>
+> Velocity criteria are used to store the player's rotation.
+>
+> Each rotation criteria takes a positive integer as an argument. The argument will specify how many decimals to include in the output score.
+>
+> For example, if the player's rotation on one axis is 18.324 degrees and the argument is set to 2, the output score will be 1832. Setting the score of an objective with this type will also set the player's rotation on that axis.

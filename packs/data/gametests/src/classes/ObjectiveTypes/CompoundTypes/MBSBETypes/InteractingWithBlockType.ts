@@ -7,12 +7,12 @@ export class InteractingWithBlockType extends CompoundObjectiveType {
   initialize(objective: Objective): void {
     world.events.itemUseOn.subscribe((evd) => {
       if (!(evd.source instanceof Player)) return;
-      if (new Date().getTime() - this.lastTriggerPlayers[evd.source.name] < 10)
+      if (new Date().getTime() - this.lastTriggerPlayers[evd.source.name] < 45)
         return;
       this.lastTriggerPlayers[evd.source.name] = new Date().getTime();
 
       const block = evd.source.dimension.getBlock(evd.blockLocation);
-      const isId = this.equalsArgument(block.type.id);
+      const isId = this.equalsArgument(block.id);
       if (!isId) return;
       this.addScore(objective, evd.source, 1);
     });

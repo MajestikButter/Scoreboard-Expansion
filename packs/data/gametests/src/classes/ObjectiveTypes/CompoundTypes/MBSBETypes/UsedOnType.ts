@@ -3,8 +3,18 @@ import { Objective } from "../../../Objective";
 import { CompoundObjectiveType } from "../../CompoundObjectiveType";
 
 export class UsedOnType extends CompoundObjectiveType {
+  private lastTriggerPlayers: { [plr: string]: number } = {};
   initialize(objective: Objective): void {
-    world.events.itemStartUseOn.subscribe((evd) => {
+    world.events.itemUseOn.subscribe((evd) => {
+      if (!(evd.source instanceof Player)) return;
+      if (new Date().getTime() - this.lastTriggerPlayers[evd.source.name] < 45)
+        return;
+      const prev = this.lastTriggerPlayers[evd.source.name];
+      this.lastTriggerPlayers[evd.source.name] = new Date().getTime();
+
+      if (new Date().getTime() - prev < 150)
+        return;
+
       if (!this.equalsArgument(evd.item?.id)) return;
       this.addScore(objective, evd.source, 1);
     });

@@ -7,7 +7,7 @@ export class UsingOnType extends CompoundObjectiveType {
   initialize(objective: Objective): void {
     world.events.itemUseOn.subscribe((evd) => {
       if (!(evd.source instanceof Player)) return;
-      if (new Date().getTime() - this.lastTriggerPlayers[evd.source.name] < 10)
+      if (new Date().getTime() - this.lastTriggerPlayers[evd.source.name] < 45)
         return;
       this.lastTriggerPlayers[evd.source.name] = new Date().getTime();
 

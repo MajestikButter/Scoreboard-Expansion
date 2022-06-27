@@ -42,6 +42,11 @@ import { PositionXType } from "./ObjectiveTypes/CompoundTypes/MBSBETypes/Positio
 import { PositionYType } from "./ObjectiveTypes/CompoundTypes/MBSBETypes/PositionYType";
 import { PositionZType } from "./ObjectiveTypes/CompoundTypes/MBSBETypes/PositionZType";
 import { SneakTimeType } from "./ObjectiveTypes/CompoundTypes/CustomTypes/SneakTimeType";
+import { VelocityZType } from "./ObjectiveTypes/CompoundTypes/MBSBETypes/VelocityZType";
+import { VelocityXType } from "./ObjectiveTypes/CompoundTypes/MBSBETypes/VelocityXType";
+import { VelocityYType } from "./ObjectiveTypes/CompoundTypes/MBSBETypes/VelocityYType";
+import { RotationXType } from "./ObjectiveTypes/CompoundTypes/MBSBETypes/RotationXType";
+import { RotationYType } from "./ObjectiveTypes/CompoundTypes/MBSBETypes/RotationYType";
 
 class ObjectiveMap {
   private scoreboard = new DataBase("mbsbe:objectives");
@@ -279,6 +284,11 @@ class ObjectiveMap {
     this.addType("mbsbe.positionX", PositionXType);
     this.addType("mbsbe.positionY", PositionYType);
     this.addType("mbsbe.positionZ", PositionZType);
+    this.addType("mbsbe.velocityX", VelocityXType);
+    this.addType("mbsbe.velocityY", VelocityYType);
+    this.addType("mbsbe.velocityZ", VelocityZType);
+    this.addType("mbsbe.rotationX", RotationXType);
+    this.addType("mbsbe.rotationY", RotationYType);
   }
 
   constructor() {
