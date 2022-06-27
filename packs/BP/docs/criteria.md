@@ -146,7 +146,11 @@
 
 ### Position Criteria
 
-> Position criteria: `mbsbe.positionX`, `mbsbe.positionX`, `mbsbe.positionX`
+> Position criteria:
+>
+> - `mbsbe.positionX`
+> - `mbsbe.positionY`
+> - `mbsbe.positionZ`
 >
 > Position criteria are used to store the player's position.
 >
