@@ -1,3 +1,4 @@
+import { MBCPlayer } from "mbcore-gametest";
 import { Player, Entity, world, Location } from "mojang-minecraft";
 import { Objective } from "../../../Objective";
 import { CompoundObjectiveType } from "../../CompoundObjectiveType";
@@ -33,12 +34,17 @@ export class PositionXType extends CompoundObjectiveType {
   ): void {
     if (!(entity instanceof Player)) return;
 
+    const plr = MBCPlayer.getByPlayer(entity);
+    if (!plr) return;
+
     const decimals = parseInt(this.argument);
     const div = Math.max(Math.pow(10, decimals), 1);
     let { x, y, z } = entity.location;
     x = newScore / div;
     const rot = entity.rotation;
+    const vel = entity.velocity;
     entity.teleport(new Location(x, y, z), entity.dimension, rot.x, rot.y);
+    plr.setVelocity(vel);
   }
   validArgument(argument: string): boolean {
     return /^\d+$/.test(argument);

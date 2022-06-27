@@ -41,7 +41,9 @@ export class RotationYType extends CompoundObjectiveType {
     const div = Math.max(Math.pow(10, decimals), 1);
     let { x, y } = entity.rotation;
     y = newScore / div;
-    entity.setRotation(x, y);
+    const vel = entity.velocity;
+    entity.teleport(entity.location, entity.dimension, x, y);
+    plr.setVelocity(vel);
   }
   validArgument(argument: string): boolean {
     return /^\d+$/.test(argument);
