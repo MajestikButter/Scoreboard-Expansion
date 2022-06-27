@@ -25,7 +25,7 @@ export class Utils {
       try {
         return { result: executor.runCommand(cmd), error: false };
       } catch (err) {
-        return { result: JSON.parse(err), error: true };
+        return { result: JSON.parse(err as string), error: true };
       }
     };
     if (typeof cmd === "string") {
