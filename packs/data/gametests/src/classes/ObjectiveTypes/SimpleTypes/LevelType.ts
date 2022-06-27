@@ -5,7 +5,9 @@ import { ObjectiveType } from "../ObjectiveType";
 
 export class LevelType extends ObjectiveType<"level"> {
   initialize(objective: Objective): void {}
-  beforeUpdate(objective: Objective, tick: number, delta: number): void {}
+  beforeUpdate(objective: Objective, tick: number, delta: number): void {
+    objective.scoreboard.add("@a", 0);
+  }
   update(objective: Objective, tick: number, delta: number): void {}
   updatePlayer(
     objective: Objective,

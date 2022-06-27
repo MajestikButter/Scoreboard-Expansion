@@ -3,15 +3,7 @@ import { Objective } from "../../../Objective";
 import { ObjectiveType } from "../../ObjectiveType";
 
 export class EntityHealthType extends ObjectiveType<"mbsbe.entityHealth"> {
-  initialize(objective: Objective): void {
-    world.events.entityHurt.subscribe((evd) => {
-      if (evd.hurtEntity.id === "minecraft:player") return;
-      const entity = evd.hurtEntity;
-      const hp = entity.getComponent("health") as EntityHealthComponent;
-      if (!hp) return;
-      this.setScore(objective, entity, hp.current);
-    });
-  }
+  initialize(objective: Objective): void {}
   beforeUpdate(objective: Objective, tick: number, delta: number): void {}
   update(objective: Objective, tick: number, delta: number): void {}
   updatePlayer(
