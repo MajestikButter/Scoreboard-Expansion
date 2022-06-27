@@ -5,3 +5,6 @@ This Minecraft Bedrock addon aims to add more capabilities to the scoreboard sys
 The documentation for criteria can be found [Here](packs/BP/docs/criteria.md)
 
 Please report bugs or suggest new criteria [Here](https://github.com/MajestikButter/Scoreboard-Expansion/issues)
+
+# Brief Showcase
+[![Alt text](https://img.youtube.com/vi/lnLc0dye8yE/0.jpg)](https://www.youtube.com/watch?v=lnLc0dye8yE)
