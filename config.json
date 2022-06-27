@@ -12,6 +12,9 @@
         "url": "github.com/MajestikButter/Regolith-Filters",
         "version": "6fa6a6a9298f7d033d0f2e421edfb33292807aae"
       },
+      "gametests": {
+        "version": "1.0.3"
+      },
       "json_formatter": {
         "url": "github.com/MajestikButter/Regolith-Filters",
         "version": "6fa6a6a9298f7d033d0f2e421edfb33292807aae"
@@ -22,24 +25,23 @@
       }
     },
     "profiles": {
-      "build": {
+      "default": {
         "export": {
           "readOnly": false,
           "target": "local"
         },
         "filters": [
           {
-            "filter": "module_importer"
-          },
-          {
-            "filter": "esbuild_executor",
+            "filter": "gametests",
             "settings": {
-              "removeGlob": "BP/src/**/*"
+              "outfile": "scripts/index.js",
+              "moduleType": "script",
+              "modules": ["mojang-minecraft", "mojang-minecraft-ui", "mojang-gametest"],
+              "moduleUUID": "e1b38c27-1088-4423-aeef-a9a29e47fde9",
+              "buildOptions": {
+                "entryPoints": ["src/index.ts"]
+              }
             }
-          },
-          {
-            "filter": "json_formatter",
-            "settings": {}
           }
         ]
       },
@@ -53,9 +55,13 @@
             "filter": "module_importer"
           },
           {
-            "filter": "esbuild_executor",
+            "filter": "gametests",
             "settings": {
-              "removeGlob": "BP/src/**/*"
+              "outfile": "scripts/index.js",
+              "moduleType": "script",
+              "buildOptions": {
+                "entryPoints": ["src/index.ts"]
+              }
             }
           },
           {
