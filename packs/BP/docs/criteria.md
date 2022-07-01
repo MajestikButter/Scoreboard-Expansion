@@ -69,7 +69,7 @@ If a criteria does not support `Special Writing`, nothing will happen when a sco
 
 ### `health`
 
-> [<span style="color:cyan; font-size:20px">**[Entity Tracked]**</span>][entity-tracked] [<span style="color:orange; font-size:20px">**[Special Writing]**</span>][special-writing]
+> [**[Entity Tracked]**][entity-tracked] [**[Special Writing]**][special-writing]
 
 > Stores the player's health value. However, unlike the java variant of this criteria, this objective is writeable. This means that you can run a `scoreboard players set` command to set a players health. Note: this will not allow you to set the player's health above their max health.
 
@@ -78,7 +78,7 @@ If a criteria does not support `Special Writing`, nothing will happen when a sco
 > Increments when a player dies.
 
 ### `level`
-> [<span style="color:orange; font-size:20px">**[Special Writing]**</span>][special-writing]
+> [**[Special Writing]**][special-writing]
 
 > Stores the player's experience level. Just like the health criteria, this criteria has also been made writeable so you can use `scoreboard players set` to set a player's experience level.
 
@@ -194,13 +194,13 @@ If a criteria does not support `Special Writing`, nothing will happen when a sco
 
 ### `mbsbe.movement`
 
-> [<span style="color:cyan; font-size:20px">**[Entity Tracked]**</span>][entity-tracked] [<span style="color:orange; font-size:20px">**[Special Writing]**</span>][special-writing]
+> [**[Entity Tracked]**][entity-tracked] [**[Special Writing]**][special-writing]
 
 > Takes a positive integer as an argument. The argument will specify how many decimals to include in the output score. Stores the movement value of the player or entity being tracked (used for ground speed, changes when a player is sprinting or gains a speed modifying effect)
 
 ### Position Criteria
 
-> [<span style="color:cyan; font-size:20px">**[Entity Tracked]**</span>][entity-tracked] [<span style="color:orange; font-size:20px">**[Special Writing]**</span>][special-writing]
+> [**[Entity Tracked]**][entity-tracked] [**[Special Writing]**][special-writing]
 
 > Position criteria:
 >
@@ -216,7 +216,7 @@ If a criteria does not support `Special Writing`, nothing will happen when a sco
 
 ### Velocity Criteria
 
-> [<span style="color:cyan; font-size:20px">**[Entity Tracked]**</span>][entity-tracked] [<span style="color:orange; font-size:20px">**[Special Writing]**</span>][special-writing]
+> [**[Entity Tracked]**][entity-tracked] [**[Special Writing]**][special-writing]
 
 > Velocity criteria:
 >
@@ -232,7 +232,7 @@ If a criteria does not support `Special Writing`, nothing will happen when a sco
 
 ### Rotation Criteria
 
-> [<span style="color:cyan; font-size:20px">**[Entity Tracked]**</span>][entity-tracked] [<span style="color:orange; font-size:20px">**[Special Writing]**</span>][special-writing]
+> [**[Entity Tracked]**][entity-tracked] [**[Special Writing]**][special-writing]
 
 > Rotation criteria:
 >
@@ -247,7 +247,7 @@ If a criteria does not support `Special Writing`, nothing will happen when a sco
 
 ### View Vector Criteria
 
-> [<span style="color:cyan; font-size:20px">**[Entity Tracked]**</span>][entity-tracked]
+> [**[Entity Tracked]**][entity-tracked]
 
 > View vector criteria:
 >
