@@ -33,6 +33,12 @@ export class UsedOnType extends CompoundObjectiveType {
     tick: number,
     delta: number
   ): void {}
+  updateActor(
+    objective: Objective,
+    actor: Entity,
+    tick: number,
+    delta: number
+  ): void {}
   scoreChanged(
     objective: Objective,
     entity: Entity,

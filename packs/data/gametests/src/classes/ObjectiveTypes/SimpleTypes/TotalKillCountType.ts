@@ -5,6 +5,19 @@ import { ObjectiveType } from "../ObjectiveType";
 
 export class TotalKillCountType extends ObjectiveType<"totalKillCount"> {
   initialize(objective: Objective): void {
+    world.events.projectileHit.subscribe((evd) => {
+      if (!evd.source || evd.entityHit?.entity?.id !== "minecraft:player")
+        return;
+      const entity = evd.source;
+      const hitEntity = evd.entityHit.entity;
+
+      setTickTimeout(() => {
+        const hp = hitEntity.getComponent("health") as EntityHealthComponent;
+        if (!hp || hp.current > 0) return;
+
+        this.addScore(objective, entity, 1);
+      }, 1);
+    });
     world.events.entityHit.subscribe((evd) => {
       if (!evd.hitEntity || evd.entity.id !== "minecraft:player") return;
       const entity = evd.entity;
@@ -28,6 +41,12 @@ export class TotalKillCountType extends ObjectiveType<"totalKillCount"> {
   updateEntity(
     objective: Objective,
     entity: Entity,
+    tick: number,
+    delta: number
+  ): void {}
+  updateActor(
+    objective: Objective,
+    actor: Entity,
     tick: number,
     delta: number
   ): void {}

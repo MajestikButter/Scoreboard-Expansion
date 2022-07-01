@@ -22,6 +22,12 @@ export class TotalInteractingWithBlockType extends ObjectiveType<"mbsbe.totalUse
     tick: number,
     delta: number
   ): void {}
+  updateActor(
+    objective: Objective,
+    actor: Entity,
+    tick: number,
+    delta: number
+  ): void {}
   scoreChanged(
     objective: Objective,
     entity: Entity,

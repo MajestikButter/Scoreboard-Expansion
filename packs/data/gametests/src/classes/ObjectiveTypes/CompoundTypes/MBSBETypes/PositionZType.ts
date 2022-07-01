@@ -14,29 +14,30 @@ export class PositionZType extends CompoundObjectiveType {
     player: Player,
     tick: number,
     delta: number
-  ): void {
-    const decimals = parseInt(this.argument);
-    const pos = player.location.z;
-    const mul = Math.max(Math.pow(10, decimals), 1);
-    this.setScore(objective, player, Math.floor(pos * mul));
-  }
+  ): void {}
   updateEntity(
     objective: Objective,
     entity: Entity,
     tick: number,
     delta: number
   ): void {}
+  updateActor(
+    objective: Objective,
+    actor: Entity,
+    tick: number,
+    delta: number
+  ): void {
+    const decimals = parseInt(this.argument);
+    const pos = actor.location.z;
+    const mul = Math.max(Math.pow(10, decimals), 1);
+    this.setScore(objective, actor, Math.floor(pos * mul));
+  }
   scoreChanged(
     objective: Objective,
     entity: Entity,
     newScore: number,
     prevScore: number
   ): void {
-    if (!(entity instanceof Player)) return;
-
-    const plr = MBCPlayer.getByPlayer(entity);
-    if (!plr) return;
-
     const decimals = parseInt(this.argument);
     const div = Math.max(Math.pow(10, decimals), 1);
     let { x, y, z } = entity.location;
@@ -44,6 +45,14 @@ export class PositionZType extends CompoundObjectiveType {
     const rot = entity.rotation;
     const vel = entity.velocity;
     entity.teleport(new Location(x, y, z), entity.dimension, rot.x, rot.y);
+
+    if (!(entity instanceof Player)) {
+      entity.setVelocity(vel);
+      return;
+    }
+
+    const plr = MBCPlayer.getByPlayer(entity);
+    if (!plr) return;
     plr.setVelocity(vel);
   }
   validArgument(argument: string): boolean {

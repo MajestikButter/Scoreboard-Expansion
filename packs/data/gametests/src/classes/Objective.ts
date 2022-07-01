@@ -1,22 +1,8 @@
 import { Scoreboard } from "mbcore-gametest";
-import { EntityHealthComponent, TickEvent, world } from "mojang-minecraft";
 import { ObjectiveType } from "./ObjectiveTypes/ObjectiveType";
 import { Utils } from "./Utils";
 
 export class Objective {
-  static updateFuncs: {
-    [type: string]: (objective: Objective, tick: number, delta: number) => void;
-  } = {
-    health: (objective) => {
-      const sb = objective.scoreboard;
-      for (const plr of world.getPlayers()) {
-        const hp = plr.getComponent("health") as EntityHealthComponent;
-        if (!hp) continue;
-        sb.set(plr, hp.current);
-      }
-    },
-  };
-
   private _id: string;
   get id() {
     return this._id;

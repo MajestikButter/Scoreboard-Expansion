@@ -7,6 +7,7 @@ import {
 import {
   Entity,
   Player,
+  ScoreboardIdentity,
   ScoreboardIdentityType,
   world,
 } from "mojang-minecraft";
@@ -43,6 +44,12 @@ export abstract class ObjectiveType<raw extends string = string> {
     tick: number,
     delta: number
   ): void | PromiseLike<void>;
+  abstract updateActor(
+    objective: Objective,
+    actor: Entity,
+    tick: number,
+    delta: number
+  ): void | PromiseLike<void>;
   abstract scoreChanged(
     objective: Objective,
     entity: Entity,
@@ -73,6 +80,8 @@ export abstract class ObjectiveType<raw extends string = string> {
         const curr = scoreInfo.score;
         if (prev !== curr) this.scoreChanged(objective, entity, curr, prev);
       }
+
+      this.updateActor(objective, entity, tick, delta);
 
       if (entity instanceof Player)
         this.updatePlayer(objective, entity, tick, delta);

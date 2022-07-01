@@ -24,6 +24,12 @@ export class XPType extends ObjectiveType<"xp"> {
     tick: number,
     delta: number
   ): void {}
+  updateActor(
+    objective: Objective,
+    actor: Entity,
+    tick: number,
+    delta: number
+  ): void {}
   scoreChanged(
     objective: Objective,
     entity: Entity,

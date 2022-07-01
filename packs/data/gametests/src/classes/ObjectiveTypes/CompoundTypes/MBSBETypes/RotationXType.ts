@@ -1,5 +1,12 @@
 import { MBCPlayer } from "mbcore-gametest";
-import { Player, Entity, world, Location, Vector, XYRotation } from "mojang-minecraft";
+import {
+  Player,
+  Entity,
+  world,
+  Location,
+  Vector,
+  XYRotation,
+} from "mojang-minecraft";
 import { Objective } from "../../../Objective";
 import { CompoundObjectiveType } from "../../CompoundObjectiveType";
 
@@ -14,35 +21,44 @@ export class RotationXType extends CompoundObjectiveType {
     player: Player,
     tick: number,
     delta: number
-  ): void {
-    const decimals = parseInt(this.argument);
-    const pos = player.rotation.x;
-    const mul = Math.max(Math.pow(10, decimals), 1);
-    this.setScore(objective, player, Math.floor(pos * mul));
-  }
+  ): void {}
   updateEntity(
     objective: Objective,
     entity: Entity,
     tick: number,
     delta: number
   ): void {}
+  updateActor(
+    objective: Objective,
+    actor: Entity,
+    tick: number,
+    delta: number
+  ): void {
+    const decimals = parseInt(this.argument);
+    const pos = actor.rotation.x;
+    const mul = Math.max(Math.pow(10, decimals), 1);
+    this.setScore(objective, actor, Math.floor(pos * mul));
+  }
   scoreChanged(
     objective: Objective,
     entity: Entity,
     newScore: number,
     prevScore: number
   ): void {
-    if (!(entity instanceof Player)) return;
-
-    const plr = MBCPlayer.getByPlayer(entity);
-    if (!plr) return;
-
     const decimals = parseInt(this.argument);
     const div = Math.max(Math.pow(10, decimals), 1);
     let { x, y } = entity.rotation;
     x = newScore / div;
     const vel = entity.velocity;
+
+    if (!(entity instanceof Player)) {
+      entity.setRotation(x, y);
+      return;
+    }
+
+    const plr = MBCPlayer.getByPlayer(entity);
     entity.teleport(entity.location, entity.dimension, x, y);
+    if (!plr) return;
     plr.setVelocity(vel);
   }
   validArgument(argument: string): boolean {

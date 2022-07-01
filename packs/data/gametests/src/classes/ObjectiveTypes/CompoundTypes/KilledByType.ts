@@ -13,11 +13,12 @@ export class KilledByType extends CompoundObjectiveType {
       )
         return;
       const hitEntity = evd.entityHit.entity;
-      const hp = hitEntity.getComponent("health") as EntityHealthComponent;
-      console.log(hitEntity.nameTag, "ph");
-      if (!hp || hp.current > 0) return;
 
-      this.addScore(objective, hitEntity, 1);
+      setTickTimeout(() => {
+        const hp = hitEntity.getComponent("health") as EntityHealthComponent;
+        if (!hp || hp.current > 0) return;
+        this.addScore(objective, hitEntity, 1);
+      }, 1);
     });
     world.events.entityHit.subscribe((evd) => {
       if (
@@ -29,7 +30,6 @@ export class KilledByType extends CompoundObjectiveType {
       console.log(hitEntity.nameTag, "eh");
       setTickTimeout(() => {
         const hp = hitEntity.getComponent("health") as EntityHealthComponent;
-        console.log(hp);
         if (!hp || hp.current > 0) return;
         this.addScore(objective, hitEntity, 1);
       }, 1);
@@ -46,6 +46,12 @@ export class KilledByType extends CompoundObjectiveType {
   updateEntity(
     objective: Objective,
     entity: Entity,
+    tick: number,
+    delta: number
+  ): void {}
+  updateActor(
+    objective: Objective,
+    actor: Entity,
     tick: number,
     delta: number
   ): void {}

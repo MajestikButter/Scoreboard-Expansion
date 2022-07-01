@@ -47,6 +47,11 @@ import { VelocityXType } from "./ObjectiveTypes/CompoundTypes/MBSBETypes/Velocit
 import { VelocityYType } from "./ObjectiveTypes/CompoundTypes/MBSBETypes/VelocityYType";
 import { RotationXType } from "./ObjectiveTypes/CompoundTypes/MBSBETypes/RotationXType";
 import { RotationYType } from "./ObjectiveTypes/CompoundTypes/MBSBETypes/RotationYType";
+import { ViewVectorXType } from "./ObjectiveTypes/CompoundTypes/MBSBETypes/ViewVectorXType";
+import { ViewVectorYType } from "./ObjectiveTypes/CompoundTypes/MBSBETypes/ViewVectorYType";
+import { ViewVectorZType } from "./ObjectiveTypes/CompoundTypes/MBSBETypes/ViewVectorZType";
+import { MovementType } from "./ObjectiveTypes/CompoundTypes/MBSBETypes/MovementType";
+import { ChatType } from "./ObjectiveTypes/SimpleTypes/MBSBETypes/ChatType";
 
 class ObjectiveMap {
   private scoreboard = new DataBase("mbsbe:objectives");
@@ -267,9 +272,13 @@ class ObjectiveMap {
     this.addType("mbsbe.totalPlaced", TotalPlacedType);
     this.addType("mbsbe.totalMined", TotalMinedType);
     this.addType("mbsbe.totalInteractWithBlock", TotalInteractWithBlockType);
-    this.addType("mbsbe.totalInteractingWithBlock", TotalInteractingWithBlockType);
+    this.addType(
+      "mbsbe.totalInteractingWithBlock",
+      TotalInteractingWithBlockType
+    );
     this.addType("mbsbe.totalUsed", TotalUsedType);
     this.addType("mbsbe.travelOneCm", TravelOneCMType);
+    this.addType("mbsbe.chat", ChatType);
 
     //////////////////////////////////
     //// Compound objective types ////
@@ -289,6 +298,9 @@ class ObjectiveMap {
     this.addType("mbsbe.velocityZ", VelocityZType);
     this.addType("mbsbe.rotationX", RotationXType);
     this.addType("mbsbe.rotationY", RotationYType);
+    this.addType("mbsbe.viewVectorX", ViewVectorXType);
+    this.addType("mbsbe.viewVectorY", ViewVectorYType);
+    this.addType("mbsbe.viewVectorZ", ViewVectorZType);
   }
 
   constructor() {
@@ -311,257 +323,238 @@ class ObjectiveMap {
     });
 
     const prefix = "\\";
-    const sendMessage = (plr: Player, msg: string, shouldSend: boolean) => {
-      if (shouldSend)
-        Utils.runCommand(
-          `tellraw @s {"rawtext":[{"text":${JSON.stringify(msg)}}]}`,
-          plr
-        );
-    };
-    const throwCMDError = (plr: Player, msg: string) => {
-      sendMessage(
-        plr,
-        `§cAn error occured while running your command: ${msg}§r`,
-        true
-      );
-    };
     world.events.beforeChat.subscribe((evd) => {
       if (!evd.message.startsWith(prefix)) return;
       evd.cancel = true;
       const msg = evd.message.slice(prefix.length);
-      if (msg.includes('"')) {
-        return throwCMDError(
-          evd.sender,
-          `" is not currently supported in custom commands`
-        );
-      }
-      const hasOPTag = evd.sender.hasTag("op");
-      const cmdFeed = Utils.getGamerules().sendcommandfeedback;
+      this.handleChatCommand(msg, evd.sender, (msg: string, error: boolean) => {
+        if (error) msg = `§cAn error occured while running your command: ${msg}§r`
+          Utils.runCommand(
+            `tellraw @s {"rawtext":[{"text":${JSON.stringify(msg)}}]}`,
+            evd.sender
+          );
+      }, evd.sender.hasTag("op"));
+    });
+  }
 
-      const args = msg.split(" ");
-      switch (args[0].toLocaleLowerCase()) {
-        case "trigger": {
-          const objectiveStr = args[1];
-          if (!objectiveStr) {
-            return throwCMDError(evd.sender, "No objective supplied");
-          }
-          const objective = this.getObjective(args[1]);
-          if (!objective) {
-            return throwCMDError(
-              evd.sender,
-              `${objectiveStr} is not a valid objective`
+  handleChatCommand(command: string, player: Player, messageFunc = (msg: string, error: boolean) => {
+
+  }, opPermission = true) {
+    const sendMessage = (msg: string, shouldSend: boolean) => {
+      if (shouldSend) {
+        messageFunc(msg, false);
+      }
+    };
+    const throwCMDError = (msg: string) => {
+      messageFunc(msg, true);
+    };
+
+    if (command.includes('"')) {
+      return throwCMDError(
+        `" is not currently supported in custom commands`
+      );
+    }
+
+    const hasOPTag = player.hasTag("op");
+    const cmdFeed = Utils.getGamerules().sendcommandfeedback;
+
+    const args = command.split(" ");
+    switch (args[0].toLocaleLowerCase()) {
+      case "trigger": {
+        const objectiveStr = args[1];
+        if (!objectiveStr) {
+          return throwCMDError("No objective supplied");
+        }
+        const objective = this.getObjective(args[1]);
+        if (!objective) {
+          return throwCMDError(
+            `${objectiveStr} is not a valid objective`
+          );
+        }
+        if (objective.type.raw !== "trigger") {
+          return throwCMDError(
+            `${objectiveStr} is not a trigger type objective`
+          );
+        }
+        if (!player.hasTag(`enable:${objectiveStr}`)) {
+          return throwCMDError(
+            `You do not have permission to trigger ${objectiveStr}`
+          );
+        }
+        if (args[2]) {
+          const parseVal = () => {
+            if (!args[3]) {
+              return throwCMDError("No value supplied");
+            }
+            if ((args[3].match(/-?\d+/) ?? [])[0] !== args[3]) {
+              return throwCMDError(`Invalid value supplied ${args[3]}`);
+            }
+            return Math.min(
+              Math.max(parseInt(args[3]), -2147483648),
+              2147483647
             );
-          }
-          if (objective.type.raw !== "trigger") {
-            return throwCMDError(
-              evd.sender,
-              `${objectiveStr} is not a trigger type objective`
-            );
-          }
-          if (!evd.sender.hasTag(`enable:${objectiveStr}`)) {
-            return throwCMDError(
-              evd.sender,
-              `You do not have permission to trigger ${objectiveStr}`
-            );
-          }
-          if (args[2]) {
-            const parseVal = () => {
-              if (!args[3]) {
-                return throwCMDError(evd.sender, "No value supplied");
-              }
-              if ((args[3].match(/-?\d+/) ?? [])[0] !== args[3]) {
-                return throwCMDError(
-                  evd.sender,
-                  `Invalid value supplied ${args[3]}`
-                );
-              }
-              return Math.min(
-                Math.max(parseInt(args[3]), -2147483648),
-                2147483647
+          };
+          switch (args[2].toLocaleLowerCase()) {
+            case "add": {
+              const value = parseVal();
+              if (value === undefined) return;
+              objective.type.addScore(objective, player, value as number);
+              sendMessage(
+                `Triggered [${objectiveStr}] (added ${value} to value)`,
+                cmdFeed
               );
-            };
+              break;
+            }
+            case "set": {
+              const value = parseVal();
+              if (value === undefined) return;
+              objective.type.setScore(objective, player, value as number);
+              sendMessage(
+                `Triggered [${objectiveStr}] (set value to ${value})`,
+                cmdFeed
+              );
+              break;
+            }
+            default: {
+              return throwCMDError(`Invalid argument ${args[2]}`);
+            }
+          }
+        } else {
+          objective.type.addScore(objective, player, 1);
+          sendMessage(`Triggered [${objectiveStr}]`, cmdFeed);
+        }
+        player.removeTag(`enable:${objectiveStr}`);
+        break;
+      }
+      case "scoreboard": {
+        if (!hasOPTag) {
+          return throwCMDError(
+            "You do not have permission to use this command"
+          );
+        }
+        if (!args[1]) {
+          return throwCMDError("No subcommand supplied");
+        }
+        switch (args[1].toLocaleLowerCase()) {
+          case "objectives": {
+            if (!args[2]) {
+              return throwCMDError("No objectives subcommand supplied");
+            }
             switch (args[2].toLocaleLowerCase()) {
               case "add": {
-                const value = parseVal();
-                if (value === undefined) return;
-                objective.type.addScore(objective, evd.sender, value as number);
+                if (!args[3]) {
+                  return throwCMDError(`No objective id supplied`);
+                }
+                if (!args[4]) {
+                  return throwCMDError(`No objective type supplied`);
+                }
+                try {
+                  Objectives.createObjective(args[3], args[4]);
+                } catch (err) {
+                  return throwCMDError(err as string);
+                }
                 sendMessage(
-                  evd.sender,
-                  `Triggered [${objectiveStr}] (added ${value} to value)`,
+                  `Added objective ${args[3]} as type ${args[4]}`,
                   cmdFeed
                 );
                 break;
               }
-              case "set": {
-                const value = parseVal();
-                if (value === undefined) return;
-                objective.type.setScore(objective, evd.sender, value as number);
+              case "criteria": {
+                let simpleTypes = " - §l§aSingle Criteria§r";
+                let compoundTypes = " - §l§aCompound Criteria§r";
+                for (let [id, val] of this._types) {
+                  if (val.prototype instanceof CompoundObjectiveType) {
+                    compoundTypes += `\n  §r- ${id}`;
+                  } else simpleTypes += `\n  §r- ${id}`;
+                }
                 sendMessage(
-                  evd.sender,
-                  `Triggered [${objectiveStr}] (set value to ${value})`,
-                  cmdFeed
+                  `§l§2> Objective Criteria\n${simpleTypes}\n${compoundTypes}§r`,
+                  true
                 );
+                break;
+              }
+              case "list": {
+                const objectives = Objectives.getObjectives();
+                if (!objectives.length) {
+                  return throwCMDError("No objectives found");
+                }
+                const msg = objectives
+                  .map((obj) => `  §r- ${obj.id} §7(${obj.type.raw})`)
+                  .join("\n");
+                sendMessage(`§l§2> Objective List\n${msg}§r`, true);
                 break;
               }
               default: {
-                return throwCMDError(evd.sender, `Invalid argument ${args[2]}`);
-              }
-            }
-          } else {
-            objective.type.addScore(objective, evd.sender, 1);
-            sendMessage(evd.sender, `Triggered [${objectiveStr}]`, cmdFeed);
-          }
-          evd.sender.removeTag(`enable:${objectiveStr}`);
-          break;
-        }
-        case "scoreboard": {
-          if (!hasOPTag) {
-            return throwCMDError(
-              evd.sender,
-              "You do not have permission to use this command"
-            );
-          }
-          if (!args[1]) {
-            return throwCMDError(evd.sender, "No subcommand supplied");
-          }
-          switch (args[1].toLocaleLowerCase()) {
-            case "objectives": {
-              if (!args[2]) {
                 return throwCMDError(
-                  evd.sender,
-                  "No objectives subcommand supplied"
+                  `Invalid objectives subcommand ${args[2]}`
                 );
               }
-              switch (args[2].toLocaleLowerCase()) {
-                case "add": {
-                  if (!args[3]) {
-                    return throwCMDError(
-                      evd.sender,
-                      `No objective id supplied`
-                    );
-                  }
-                  if (!args[4]) {
-                    return throwCMDError(
-                      evd.sender,
-                      `No objective type supplied`
-                    );
-                  }
-                  try {
-                    Objectives.createObjective(args[3], args[4]);
-                  } catch (err) {
-                    return throwCMDError(evd.sender, err as string);
-                  }
-                  sendMessage(
-                    evd.sender,
-                    `Added objective ${args[3]} as type ${args[4]}`,
-                    cmdFeed
-                  );
-                  break;
-                }
-                case "criteria": {
-                  let simpleTypes = " - §l§aSingle Criteria§r";
-                  let compoundTypes = " - §l§aCompound Criteria§r";
-                  for (let [id, val] of this._types) {
-                    if (val.prototype instanceof CompoundObjectiveType) {
-                      compoundTypes += `\n  §r- ${id}`;
-                    } else simpleTypes += `\n  §r- ${id}`;
-                  }
-                  sendMessage(
-                    evd.sender,
-                    `§l§2> Objective Criteria\n${simpleTypes}\n${compoundTypes}§r`,
-                    true
-                  );
-                  break;
-                }
-                case "list": {
-                  const objectives = Objectives.getObjectives();
-                  if (!objectives.length) {
-                    return throwCMDError(evd.sender, "No objectives found");
-                  }
-                  const msg = objectives
-                    .map((obj) => `  §r- ${obj.id} §7(${obj.type.raw})`)
-                    .join("\n");
-                  sendMessage(
-                    evd.sender,
-                    `§l§2> Objective List\n${msg}§r`,
-                    true
-                  );
-                  break;
-                }
-                default: {
-                  return throwCMDError(
-                    evd.sender,
-                    `Invalid objectives subcommand ${args[2]}`
-                  );
-                }
-              }
-              break;
             }
-            // case "players": {
-            //   if (!args[2]) {
-            //     return throwCMDError(
-            //       evd.sender,
-            //       "No players subcommand supplied"
-            //     );
-            //   }
-            //   switch (args[2].toLocaleLowerCase()) {
-            //     case "enable": {
-            //       if (!args[3]) {
-            //         return throwCMDError(
-            //           evd.sender,
-            //           `No objective id supplied`
-            //         );
-            //       }
-            //       sendMessage(
-            //         evd.sender,
-            //         `Enabled objective ${args[3]} for ${args[4]}`,
-            //         cmdFeed
-            //       );
-            //       break;
-            //     }
-            //     default: {
-            //       return throwCMDError(
-            //         evd.sender,
-            //         `Invalid players subcommand ${args[2]}`
-            //       );
-            //     }
-            //   }
-            //   break;
-            // }
-            default: {
-              return throwCMDError(evd.sender, `Invalid subcommand ${args[1]}`);
-            }
+            break;
           }
-          break;
+          // case "players": {
+          //   if (!args[2]) {
+          //     return throwCMDError(
+          //       player,
+          //       "No players subcommand supplied"
+          //     );
+          //   }
+          //   switch (args[2].toLocaleLowerCase()) {
+          //     case "enable": {
+          //       if (!args[3]) {
+          //         return throwCMDError(
+          //           player,
+          //           `No objective id supplied`
+          //         );
+          //       }
+          //       sendMessage(
+          //         player,
+          //         `Enabled objective ${args[3]} for ${args[4]}`,
+          //         cmdFeed
+          //       );
+          //       break;
+          //     }
+          //     default: {
+          //       return throwCMDError(
+          //         player,
+          //         `Invalid players subcommand ${args[2]}`
+          //       );
+          //     }
+          //   }
+          //   break;
+          // }
+          default: {
+            return throwCMDError(`Invalid subcommand ${args[1]}`);
+          }
         }
-        case "?":
-        case "help": {
-          sendMessage(
-            evd.sender,
-            `§l§2> Help§r§a
- §bAll Players:
-  §2- trigger <objective>
-    §aAdds 1 to an enabled trigger objective
-  §2- trigger <objective> add <value>
-    §aAdds to an enabled trigger objective
-  §2- trigger <objective> set <value>
-    §aSets the value of an enabled trigger objective
- §bOperator Only:
-  §2- scoreboard objectives add <objectiveId> <objectiveType>
-    §aAdds a new scoreboard objective
-  §2- scoreboard objectives list
-    §aLists objectives and their criteria
-  §2- scoreboard objectives criteria
-    §aLists available objective criteria§r`,
-            true
-          );
-          break;
-        }
-        default: {
-          return throwCMDError(evd.sender, `Invalid command ${args[0]}`);
-        }
+        break;
       }
-    });
+      case "?":
+      case "help": {
+        sendMessage(
+          `§l§2> Help§r§a
+§bAll Players:
+§2- trigger <objective>
+  §aAdds 1 to an enabled trigger objective
+§2- trigger <objective> add <value>
+  §aAdds to an enabled trigger objective
+§2- trigger <objective> set <value>
+  §aSets the value of an enabled trigger objective
+§bOperator Only:
+§2- scoreboard objectives add <objectiveId> <objectiveType>
+  §aAdds a new scoreboard objective
+§2- scoreboard objectives list
+  §aLists objectives and their criteria
+§2- scoreboard objectives criteria
+  §aLists available objective criteria§r`,
+          true
+        );
+        break;
+      }
+      default: {
+        return throwCMDError(`Invalid command ${args[0]}`);
+      }
+    }
   }
 }
 

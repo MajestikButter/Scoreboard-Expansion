@@ -18,6 +18,12 @@ export class DummyType extends ObjectiveType<"dummy"> {
     tick: number,
     delta: number
   ): void {}
+  updateActor(
+    objective: Objective,
+    actor: Entity,
+    tick: number,
+    delta: number
+  ): void {}
   scoreChanged(
     objective: Objective,
     entity: Entity,

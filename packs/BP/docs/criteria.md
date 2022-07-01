@@ -1,3 +1,44 @@
+[entity-tracked]: #tracking-entity-criteria
+[special-writing]: #special-writing
+
+# **Getting Started**
+
+## First steps
+
+1. Give yourself the `op` tag using `/tag @s add op`
+2. Type `\help` in chat to view chat commands
+
+&nbsp;
+
+## Creating an Objective
+
+Use the chat command `\scoreboard objectives add <objectiveId> <criteria>` to add an objective.
+
+There are two types of criteria:
+
+- Simple criteria, which have no arguments and look like this: `health`
+- Compound criteria, which require an argument to be supplied and look like this: `mbsbe.used:stick`. Compound criteria are written in two parts, the first part being the criteria id and the second being the argument supplied to the criteria, they are: `<criteriaId>:<argument>`. If the argument requires an identifier with a namespace, the `:` normally used is replaced with `.`
+
+&nbsp;
+
+## Tracking Entity Criteria
+
+Some criteria allow you to track entity properties, you can start tracking certain entities by adding them to the scoreboard using `/scoreboard players add <selector> <objective> 0`. You can also stop tracking entities using `/scoreboard players reset <selector> <objective>`.
+
+&nbsp;
+
+## Special Writing
+
+Some criteria have special writing behavior that does a something when a score is changed on a player or entity. These usually mean that they update the property that is being read.
+
+- For example, the `health` criteria supports `Special Writing` and will update the player or entity's health when their score is set.
+
+If a criteria does not support `Special Writing`, nothing will happen when a score is changed on the objective.
+
+&nbsp;
+
+&nbsp;
+
 # **Java Ported Criteria**
 
 ## Simple Criteria
@@ -28,6 +69,8 @@
 
 ### `health`
 
+> [<span style="color:cyan; font-size:20px">**[Entity Tracked]**</span>][entity-tracked] [<span style="color:orange; font-size:20px">**[Special Writing]**</span>][special-writing]
+
 > Stores the player's health value. However, unlike the java variant of this criteria, this objective is writeable. This means that you can run a `scoreboard players set` command to set a players health. Note: this will not allow you to set the player's health above their max health.
 
 ### `deathCount`
@@ -35,6 +78,7 @@
 > Increments when a player dies.
 
 ### `level`
+> [<span style="color:orange; font-size:20px">**[Special Writing]**</span>][special-writing]
 
 > Stores the player's experience level. Just like the health criteria, this criteria has also been made writeable so you can use `scoreboard players set` to set a player's experience level.
 
@@ -116,6 +160,10 @@
 
 > Increments when a player moves.
 
+### `mbsbe.chat`
+
+> Increments when a player sends a message in chat.
+
 &nbsp;
 
 ## Compound Criteria
@@ -144,7 +192,15 @@
 
 > Takes an item identifier as an argument. Increments while a player is using a specified item on any block, works with most items.
 
+### `mbsbe.movement`
+
+> [<span style="color:cyan; font-size:20px">**[Entity Tracked]**</span>][entity-tracked] [<span style="color:orange; font-size:20px">**[Special Writing]**</span>][special-writing]
+
+> Takes a positive integer as an argument. The argument will specify how many decimals to include in the output score. Stores the movement value of the player or entity being tracked (used for ground speed, changes when a player is sprinting or gains a speed modifying effect)
+
 ### Position Criteria
+
+> [<span style="color:cyan; font-size:20px">**[Entity Tracked]**</span>][entity-tracked] [<span style="color:orange; font-size:20px">**[Special Writing]**</span>][special-writing]
 
 > Position criteria:
 >
@@ -160,6 +216,8 @@
 
 ### Velocity Criteria
 
+> [<span style="color:cyan; font-size:20px">**[Entity Tracked]**</span>][entity-tracked] [<span style="color:orange; font-size:20px">**[Special Writing]**</span>][special-writing]
+
 > Velocity criteria:
 >
 > - `mbsbe.velocityX`
@@ -174,6 +232,8 @@
 
 ### Rotation Criteria
 
+> [<span style="color:cyan; font-size:20px">**[Entity Tracked]**</span>][entity-tracked] [<span style="color:orange; font-size:20px">**[Special Writing]**</span>][special-writing]
+
 > Rotation criteria:
 >
 > - `mbsbe.rotationX`
@@ -184,3 +244,19 @@
 > Each rotation criteria takes a positive integer as an argument. The argument will specify how many decimals to include in the output score.
 >
 > For example, if the player's rotation on one axis is 18.324 degrees and the argument is set to 2, the output score will be 1832. Setting the score of an objective with this type will also set the player's rotation on that axis.
+
+### View Vector Criteria
+
+> [<span style="color:cyan; font-size:20px">**[Entity Tracked]**</span>][entity-tracked]
+
+> View vector criteria:
+>
+> - `mbsbe.viewVectorX`
+> - `mbsbe.viewVectorY`
+> - `mbsbe.viewVectorZ`
+>
+> View vector criteria are used to store the player's view vector.
+>
+> Each view vector criteria takes a positive integer as an argument. The argument will specify how many decimals to include in the output score.
+>
+> For example, if the player's view vector on one axis is 10.313 and the argument is set to 2, the output score will be 1031.

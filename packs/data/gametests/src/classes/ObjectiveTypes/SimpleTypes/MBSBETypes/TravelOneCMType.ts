@@ -16,11 +16,18 @@ export class TravelOneCMType extends ObjectiveType<"mbsbe.travelOneCm"> {
   ): void {
     const dist = Math.hypot(player.velocity.x, player.velocity.z);
     const score = Math.floor(dist * 100);
-    this.addScore(objective, player, score);
+    if (score) this.addScore(objective, player, score);
+    this.setScore(objective, player, score + 1);
   }
   updateEntity(
     objective: Objective,
     entity: Entity,
+    tick: number,
+    delta: number
+  ): void {}
+  updateActor(
+    objective: Objective,
+    actor: Entity,
     tick: number,
     delta: number
   ): void {}

@@ -1,9 +1,13 @@
-import { EntityHealthComponent, Player, Entity, world } from "mojang-minecraft";
+import { Player, Entity, world } from "mojang-minecraft";
 import { Objective } from "../../../Objective";
 import { ObjectiveType } from "../../ObjectiveType";
 
-export class EntityHealthType extends ObjectiveType<"mbsbe.entityHealth"> {
-  initialize(objective: Objective): void {}
+export class ChatType extends ObjectiveType<"mbsbe.chat"> {
+  initialize(objective: Objective): void {
+    world.events.chat.subscribe((evd) => {
+      this.addScore(objective, evd.sender, 1);
+    });
+  }
   beforeUpdate(objective: Objective, tick: number, delta: number): void {}
   update(objective: Objective, tick: number, delta: number): void {}
   updatePlayer(
@@ -17,25 +21,21 @@ export class EntityHealthType extends ObjectiveType<"mbsbe.entityHealth"> {
     entity: Entity,
     tick: number,
     delta: number
-  ): void {
-    const hp = entity.getComponent("health") as EntityHealthComponent;
-    if (!hp) return;
-    this.setScore(objective, entity, Math.round(hp.current));
-  }
+  ): void {}
+  updateActor(
+    objective: Objective,
+    actor: Entity,
+    tick: number,
+    delta: number
+  ): void {}
   scoreChanged(
     objective: Objective,
     entity: Entity,
     newScore: number,
     prevScore: number
-  ): void {
-    if (entity instanceof Player) return;
-
-    const hp = entity.getComponent("health") as EntityHealthComponent;
-    if (!hp) return;
-    hp.setCurrent(newScore);
-  }
+  ): void {}
 
   constructor() {
-    super("mbsbe.entityHealth");
+    super("mbsbe.chat");
   }
 }

@@ -1,9 +1,9 @@
 import { MBCPlayer } from "mbcore-gametest";
-import { Player, Entity, world, Location, Vector } from "mojang-minecraft";
+import { Player, Entity, EntityMovementComponent } from "mojang-minecraft";
 import { Objective } from "../../../Objective";
 import { CompoundObjectiveType } from "../../CompoundObjectiveType";
 
-export class VelocityXType extends CompoundObjectiveType {
+export class MovementType extends CompoundObjectiveType {
   initialize(objective: Objective): void {}
   beforeUpdate(objective: Objective, tick: number, delta: number): void {
     objective.scoreboard.add("@a", 0);
@@ -27,10 +27,9 @@ export class VelocityXType extends CompoundObjectiveType {
     tick: number,
     delta: number
   ): void {
-    const decimals = parseInt(this.argument);
-    const pos = actor.velocity.x;
-    const mul = Math.max(Math.pow(10, decimals), 1);
-    this.setScore(objective, actor, Math.floor(pos * mul));
+    const comp = actor.getComponent("movement") as EntityMovementComponent;
+    const mul = Math.max(Math.pow(10, parseInt(this.argument)), 1);
+    this.setScore(objective, actor, Math.floor(comp.current * mul));
   }
   scoreChanged(
     objective: Objective,
@@ -38,16 +37,9 @@ export class VelocityXType extends CompoundObjectiveType {
     newScore: number,
     prevScore: number
   ): void {
-    const decimals = parseInt(this.argument);
-    const div = Math.max(Math.pow(10, decimals), 1);
-    let { x, y, z } = entity.velocity;
-    x = newScore / div;
-
-    let ent: Entity | MBCPlayer | undefined = entity;
-    if (entity instanceof Player) ent = MBCPlayer.getByPlayer(entity);
-    if (!ent) return;
-
-    ent.setVelocity(new Vector(x, y, z));
+    const comp = entity.getComponent("movement") as EntityMovementComponent;
+    const div = Math.max(Math.pow(10, parseInt(this.argument)), 1);
+    comp.setCurrent(newScore / div);
   }
   validArgument(argument: string): boolean {
     return /^\d+$/.test(argument);

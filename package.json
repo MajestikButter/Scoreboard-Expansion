@@ -2,6 +2,6 @@
   "dependencies": {
     "@types/mojang-minecraft": "^0.1.6",
     "gametest-maths": "^1.2.1",
-    "mbcore-gametest": "^2.4.0"
+    "mbcore-gametest": "^2.6.0"
   }
 }
