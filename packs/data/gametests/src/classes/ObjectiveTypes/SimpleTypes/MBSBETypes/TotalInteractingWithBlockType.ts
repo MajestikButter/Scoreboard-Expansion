@@ -2,10 +2,16 @@ import { Player, Entity, world } from "mojang-minecraft";
 import { Objective } from "../../../Objective";
 import { ObjectiveType } from "../../ObjectiveType";
 
-export class TotalInteractingWithBlockType extends ObjectiveType<"mbsbe.totalUsedOn"> {
+export class TotalInteractingWithBlockType extends ObjectiveType<"mbsbe.totalInteractingWithBlock"> {
+  private lastTriggerPlayers: { [plr: string]: number } = {};
   initialize(objective: Objective): void {
     world.events.itemUseOn.subscribe((evd) => {
-      if (evd.source instanceof Player) this.addScore(objective, evd.source, 1);
+      if (!(evd.source instanceof Player)) return;
+      if (new Date().getTime() - this.lastTriggerPlayers[evd.source.name] < 45)
+        return;
+      this.lastTriggerPlayers[evd.source.name] = new Date().getTime();
+
+      this.addScore(objective, evd.source, 1);
     });
   }
   beforeUpdate(objective: Objective, tick: number, delta: number): void {}
@@ -36,6 +42,6 @@ export class TotalInteractingWithBlockType extends ObjectiveType<"mbsbe.totalUse
   ): void {}
 
   constructor() {
-    super("mbsbe.totalUsedOn");
+    super("mbsbe.totalInteractingWithBlock");
   }
 }
