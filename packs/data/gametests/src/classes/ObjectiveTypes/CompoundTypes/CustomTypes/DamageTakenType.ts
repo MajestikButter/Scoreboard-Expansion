@@ -6,7 +6,7 @@ export class DamageTakenType extends CompoundObjectiveType {
   initialize(objective: Objective): void {
     world.events.entityHurt.subscribe((evd) => {
       if (!this.hasScore(objective, evd.hurtEntity)) return;
-      this.addScore(objective, evd.hurtEntity, evd.damage * 10);
+      this.addScore(objective, evd.hurtEntity, evd.damage * 10 + (evd.damagingEntity?.id == 'minecraft:player' ? 10 : 0));
     });
   }
   beforeUpdate(objective: Objective, tick: number, delta: number): void {

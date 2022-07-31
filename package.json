@@ -5,10 +5,14 @@
     "mbcore-gametest": "^2.7.10"
   },
   "scripts": {
-    "bump-major": "node scripts/bump major",
-    "bump-minor": "node scripts/bump minor",
+    "bundle": "node scripts/bundle",
+    "build": "regolith run && npm run bundle",
     "bump-patch": "node scripts/bump patch",
-    "bundle": "node scripts/bundle"
+    "bump-minor": "node scripts/bump minor",
+    "bump-major": "node scripts/bump major",
+    "build-patch": "npm run bump-patch && npm run build",
+    "build-minor": "npm run bump-minor && npm run build",
+    "build-major": "npm run bump-major && npm run build"
   },
   "devDependencies": {
     "adm-zip": "^0.5.9"

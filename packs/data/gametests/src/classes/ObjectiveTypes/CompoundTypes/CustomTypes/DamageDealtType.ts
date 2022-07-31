@@ -11,7 +11,11 @@ export class DamageDealtType extends CompoundObjectiveType {
         evd.projectile
       )
         return;
-      this.addScore(objective, evd.damagingEntity, evd.damage * 10);
+      this.addScore(
+        objective,
+        evd.damagingEntity,
+        evd.damage * 10 + (evd.damagingEntity?.id == "minecraft:player" ? 10 : 0)
+      );
     });
   }
   beforeUpdate(objective: Objective, tick: number, delta: number): void {
