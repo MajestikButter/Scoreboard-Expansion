@@ -279,6 +279,7 @@ class ObjectiveMap {
     this.addType("mbsbe.totalUsed", TotalUsedType);
     this.addType("mbsbe.travelOneCm", TravelOneCMType);
     this.addType("mbsbe.chat", ChatType);
+    this.addType("mbsbe.movement", MovementType);
 
     //////////////////////////////////
     //// Compound objective types ////
@@ -327,19 +328,28 @@ class ObjectiveMap {
       if (!evd.message.startsWith(prefix)) return;
       evd.cancel = true;
       const msg = evd.message.slice(prefix.length);
-      this.handleChatCommand(msg, evd.sender, (msg: string, error: boolean) => {
-        if (error) msg = `§cAn error occured while running your command: ${msg}§r`
+      this.handleChatCommand(
+        msg,
+        evd.sender,
+        (msg: string, error: boolean) => {
+          if (error)
+            msg = `§cAn error occured while running your command: ${msg}§r`;
           Utils.runCommand(
             `tellraw @s {"rawtext":[{"text":${JSON.stringify(msg)}}]}`,
             evd.sender
           );
-      }, evd.sender.hasTag("op"));
+        },
+        evd.sender.hasTag("op")
+      );
     });
   }
 
-  handleChatCommand(command: string, player: Player, messageFunc = (msg: string, error: boolean) => {
-
-  }, opPermission = true) {
+  handleChatCommand(
+    command: string,
+    player: Player,
+    messageFunc = (msg: string, error: boolean) => {},
+    opPermission = true
+  ) {
     const sendMessage = (msg: string, shouldSend: boolean) => {
       if (shouldSend) {
         messageFunc(msg, false);
@@ -350,9 +360,7 @@ class ObjectiveMap {
     };
 
     if (command.includes('"')) {
-      return throwCMDError(
-        `" is not currently supported in custom commands`
-      );
+      return throwCMDError(`" is not currently supported in custom commands`);
     }
 
     const hasOPTag = player.hasTag("op");
@@ -367,9 +375,7 @@ class ObjectiveMap {
         }
         const objective = this.getObjective(args[1]);
         if (!objective) {
-          return throwCMDError(
-            `${objectiveStr} is not a valid objective`
-          );
+          return throwCMDError(`${objectiveStr} is not a valid objective`);
         }
         if (objective.type.raw !== "trigger") {
           return throwCMDError(
