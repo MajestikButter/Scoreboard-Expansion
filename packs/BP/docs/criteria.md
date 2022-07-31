@@ -78,6 +78,7 @@ If a criteria does not support `Special Writing`, nothing will happen when a sco
 > Increments when a player dies.
 
 ### `level`
+
 > [**[Special Writing]**][special-writing]
 
 > Stores the player's experience level. Just like the health criteria, this criteria has also been made writeable so you can use `scoreboard players set` to set a player's experience level.
@@ -114,11 +115,15 @@ If a criteria does not support `Special Writing`, nothing will happen when a sco
 
 #### `custom:damage_dealt`
 
-> Increments with the amount of damage a player deals to another entity/player when a player attacks something.
+> [**[Entity Tracked]**][entity-tracked]
+
+> Increments with the amount of damage a player/entity deals to another player/entity when a player/entity attacks something. (not incremented on player death)
 
 #### `custom:damage_taken`
 
-> Increments with the amount of damage a player receives when attacked by another entity/player.
+> [**[Entity Tracked]**][entity-tracked]
+
+> Increments with the amount of damage a player/entity receives when attacked by another player/entity. (not incremented on player death)
 
 #### `custom:crouch_one_cm`
 

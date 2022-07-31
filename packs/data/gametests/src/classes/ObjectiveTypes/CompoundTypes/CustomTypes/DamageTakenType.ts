@@ -5,11 +5,13 @@ import { CompoundObjectiveType } from "../../CompoundObjectiveType";
 export class DamageTakenType extends CompoundObjectiveType {
   initialize(objective: Objective): void {
     world.events.entityHurt.subscribe((evd) => {
-      if (evd.hurtEntity.id !== "minecraft:player") return;
+      if (!this.hasScore(objective, evd.hurtEntity)) return;
       this.addScore(objective, evd.hurtEntity, evd.damage * 10);
     });
   }
-  beforeUpdate(objective: Objective, tick: number, delta: number): void {}
+  beforeUpdate(objective: Objective, tick: number, delta: number): void {
+    objective.scoreboard.add("@a", 0);
+  }
   update(objective: Objective, tick: number, delta: number): void {}
   updatePlayer(
     objective: Objective,
@@ -35,6 +37,9 @@ export class DamageTakenType extends CompoundObjectiveType {
     newScore: number,
     prevScore: number
   ): void {}
+  parseArgument(string: string): string {
+    return string;
+  }
   validArgument(argument: string): boolean {
     return true;
   }

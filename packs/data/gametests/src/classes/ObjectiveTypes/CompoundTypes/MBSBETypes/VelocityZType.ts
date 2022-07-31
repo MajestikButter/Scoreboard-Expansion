@@ -49,6 +49,9 @@ export class VelocityZType extends CompoundObjectiveType {
 
     ent.setVelocity(new Vector(x, y, z));
   }
+  parseArgument(string: string): string {
+    return string;
+  }
   validArgument(argument: string): boolean {
     return /^\d+$/.test(argument);
   }

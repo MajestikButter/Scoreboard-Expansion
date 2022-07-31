@@ -2,6 +2,15 @@
   "dependencies": {
     "@types/mojang-minecraft": "^0.1.6",
     "gametest-maths": "^1.2.1",
-    "mbcore-gametest": "^2.6.0"
+    "mbcore-gametest": "^2.7.10"
+  },
+  "scripts": {
+    "bump-major": "node scripts/bump major",
+    "bump-minor": "node scripts/bump minor",
+    "bump-patch": "node scripts/bump patch",
+    "bundle": "node scripts/bundle"
+  },
+  "devDependencies": {
+    "adm-zip": "^0.5.9"
   }
 }

@@ -37,6 +37,9 @@ export class CrouchOneCMType extends CompoundObjectiveType {
     newScore: number,
     prevScore: number
   ): void {}
+  parseArgument(string: string): string {
+    return string;
+  }
   validArgument(argument: string): boolean {
     return true;
   }

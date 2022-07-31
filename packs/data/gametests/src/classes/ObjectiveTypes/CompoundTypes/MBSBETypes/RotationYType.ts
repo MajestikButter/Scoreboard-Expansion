@@ -61,6 +61,9 @@ export class RotationYType extends CompoundObjectiveType {
     if (!plr) return;
     plr.setVelocity(vel);
   }
+  parseArgument(string: string): string {
+    return string;
+  }
   validArgument(argument: string): boolean {
     return /^\d+$/.test(argument);
   }

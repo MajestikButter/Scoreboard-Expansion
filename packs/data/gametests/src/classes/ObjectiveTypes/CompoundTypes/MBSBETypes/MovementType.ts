@@ -41,6 +41,9 @@ export class MovementType extends CompoundObjectiveType {
     const div = Math.max(Math.pow(10, parseInt(this.argument)), 1);
     comp.setCurrent(newScore / div);
   }
+  parseArgument(string: string): string {
+    return string;
+  }
   validArgument(argument: string): boolean {
     return /^\d+$/.test(argument);
   }

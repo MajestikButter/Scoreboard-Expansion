@@ -42,6 +42,9 @@ export class UsingOnType extends CompoundObjectiveType {
     newScore: number,
     prevScore: number
   ): void {}
+  parseArgument(string: string): string {
+    return string.replace(".", ":").replace("minecraft:", "");
+  }
   validArgument(argument: string): boolean {
     return !!argument;
   }

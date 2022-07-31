@@ -124,6 +124,15 @@ export abstract class ObjectiveType<raw extends string = string> {
     this.setScore(objective, entity, objective.scoreboard.get(entity) + score);
   }
 
+  hasScore(objective: Objective, entity: Entity) {
+    try {
+      objective.scoreboard.objective.getScore(entity.scoreboard);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
   constructor(raw: raw) {
     this._raw = raw;
   }

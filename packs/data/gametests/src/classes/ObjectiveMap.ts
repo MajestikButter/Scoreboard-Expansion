@@ -7,7 +7,7 @@ import {
   FieldTypes,
   StringField,
 } from "mbcore-gametest";
-import { Player, Entity, world } from "mojang-minecraft";
+import { Player, world } from "mojang-minecraft";
 import { ObjectiveType } from "./ObjectiveTypes/ObjectiveType";
 import { CompoundObjectiveType } from "./ObjectiveTypes/CompoundObjectiveType";
 import { DummyType } from "./ObjectiveTypes/SimpleTypes/DummyType";
