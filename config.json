@@ -13,7 +13,8 @@
         "version": "6fa6a6a9298f7d033d0f2e421edfb33292807aae"
       },
       "gametests": {
-        "version": "1.0.3"
+        "url": "github.com/Bedrock-OSS/regolith-filters",
+        "version": "1.2.0"
       },
       "json_formatter": {
         "url": "github.com/MajestikButter/Regolith-Filters",
@@ -32,16 +33,7 @@
         },
         "filters": [
           {
-            "filter": "gametests",
-            "settings": {
-              "outfile": "scripts/index.js",
-              "moduleType": "script",
-              "modules": ["mojang-minecraft", "mojang-minecraft-ui", "mojang-gametest"],
-              "moduleUUID": "e1b38c27-1088-4423-aeef-a9a29e47fde9",
-              "buildOptions": {
-                "entryPoints": ["src/index.ts"]
-              }
-            }
+            "profile": "shared"
           }
         ]
       },
@@ -52,21 +44,27 @@
         },
         "filters": [
           {
-            "filter": "module_importer"
-          },
+            "profile": "shared"
+          }
+        ]
+      },
+      "shared": {
+        "export": {
+          "readOnly": false,
+          "target": "local"
+        },
+        "filters": [
           {
             "filter": "gametests",
             "settings": {
-              "outfile": "scripts/index.js",
-              "moduleType": "script",
               "buildOptions": {
-                "entryPoints": ["src/index.ts"]
-              }
+                "entryPoints": ["data/gametests/src/index.ts"]
+              },
+              "moduleType": "script",
+              "moduleUUID": "e1b38c27-1088-4423-aeef-a9a29e47fde9",
+              "modules": ["mojang-minecraft", "mojang-minecraft-ui", "mojang-gametest"],
+              "outfile": "BP/scripts/index.js"
             }
-          },
-          {
-            "filter": "json_formatter",
-            "settings": {}
           }
         ]
       }

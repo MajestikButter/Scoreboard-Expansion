@@ -229,11 +229,13 @@ If a criteria does not support `Special Writing`, nothing will happen when a sco
 > - `mbsbe.velocityY`
 > - `mbsbe.velocityZ`
 >
-> Velocity criteria are used to store the player's velocity.
+> **WARNING: WRITING ONLY WORKS FOR ENTITIES**
+>
+> Velocity criteria are used to store the entity's velocity.
 >
 > Each velocity criteria takes a positive integer as an argument. The argument will specify how many decimals to include in the output score.
 >
-> For example, if the player's velocity on one axis is 10.313 and the argument is set to 2, the output score will be 1031. Setting the score of an objective with this type will also set the player's velocity on that axis.
+> For example, if the entity's velocity on one axis is 10.313 and the argument is set to 2, the output score will be 1031. Setting the score of an objective with this type will also set the entity's velocity on that axis.
 
 ### Rotation Criteria
 

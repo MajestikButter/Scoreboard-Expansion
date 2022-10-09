@@ -38,14 +38,13 @@ export class VelocityZType extends CompoundObjectiveType {
     newScore: number,
     prevScore: number
   ): void {
+    let ent: Entity | undefined = entity;
+    if (!ent || ent instanceof Player) return;
+    
     const decimals = parseInt(this.argument);
     const div = Math.max(Math.pow(10, decimals), 1);
     let { x, y, z } = entity.velocity;
     z = newScore / div;
-
-    let ent: Entity | MBCPlayer | undefined = entity;
-    if (entity instanceof Player) ent = MBCPlayer.getByPlayer(entity);
-    if (!ent) return;
 
     ent.setVelocity(new Vector(x, y, z));
   }
