@@ -2,7 +2,7 @@
   "dependencies": {
     "@types/mojang-minecraft": "^0.1.6",
     "gametest-maths": "^1.2.1",
-    "mbcore-gametest": "^2.7.10"
+    "mbcore-gametest": "^2.7.12"
   },
   "scripts": {
     "bundle": "node scripts/bundle",
